@@ -14,4 +14,22 @@ CHIP Add16 {
 
     PARTS:
    // Put you code here:
+   HalfAdder(a=a[0],b=b[0],sum=out[0],carry=carryin0);
+   FullAdder(a=a[1],b=b[1],c=carryin0,sum=out[1],carry=carryin1);
+   FullAdder(a=a[2],b=b[2],c=carryin1,sum=out[2],carry=carryin2);
+   FullAdder(a=a[3],b=b[3],c=carryin2,sum=out[3],carry=carryin3);
+   FullAdder(a=a[4],b=b[4],c=carryin3,sum=out[4],carry=carryin4);
+   FullAdder(a=a[5],b=b[5],c=carryin4,sum=out[5],carry=carryin5);
+   FullAdder(a=a[6],b=b[6],c=carryin5,sum=out[6],carry=carryin6);
+   FullAdder(a=a[7],b=b[7],c=carryin6,sum=out[7],carry=carryin7);
+   FullAdder(a=a[8],b=b[8],c=carryin7,sum=out[8],carry=carryin8);
+   FullAdder(a=a[9],b=b[9],c=carryin8,sum=out[9],carry=carryin9);
+   FullAdder(a=a[10],b=b[10],c=carryin9,sum=out[10],carry=carryin10);
+   FullAdder(a=a[11],b=b[11],c=carryin10,sum=out[11],carry=carryin11);
+   FullAdder(a=a[12],b=b[12],c=carryin11,sum=out[12],carry=carryin12);
+   FullAdder(a=a[13],b=b[13],c=carryin12,sum=out[13],carry=carryin13);
+   FullAdder(a=a[14],b=b[14],c=carryin13,sum=out[14],carry=carryin14);
+   FullAdder(a=a[15],b=b[15],c=carryin14,sum=out[15],carry=overflow);
+   // Uhhhhhhh. Feel like overflow is important, but oh well.
+
 }
