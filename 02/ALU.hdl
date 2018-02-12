@@ -42,5 +42,40 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+   // Put you code here: >>> Gonna make it in pieces
+   
+   // Determine if we zero out the result
+   Mux16(a=x,b=false,sel=zx,out=myX2);
+   Mux16(a=y,b=false,sel=zy,out=myY2);
+   
+   // Negate the output of that
+   Not16(in=myX2,out=Nx);
+   Not16(in=myY2,out=Ny);
+
+   // Determine if we use the negated output
+   Mux16(a=myX2,b=Nx,sel=nx,out=myX3);
+   Mux16(a=myY2,b=Ny,sel=ny,out=myY3);
+
+   // Get the output for both AND and ADD
+   Add16(a=myX3,b=myY3,out=myAdd);
+   And16(a=myX3,b=myY3,out=myAnd);
+
+   // Determine which function we actually use
+   Mux16(a=myAnd,b=myAdd,sel=f,out=funcOut);
+
+   // Negate that output
+   Not16(in=funcOut,out=NfuncOut);
+
+   // Determine whether we negate or not
+   Mux16(a=funcOut,b=NfuncOut,sel=no,out[0..7]=outX1,out[8..15]=outX2,out[15]=ng);
+
+   // Determine if the output is zero
+   Or8Way(in=outX1,out=z1);
+   Or8Way(in=outX2,out=z2);
+   Or(a=z1,b=z2,out=Nzr);
+   Not(in=Nzr,out=zr);
+
+   // Output the Output (Fix for a HACK bug)
+   Or16(a[0..7]=outX1,a[8..15]=outX2,b=false,out=out);
+
 }
