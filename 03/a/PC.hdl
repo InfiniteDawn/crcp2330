@@ -17,4 +17,19 @@ CHIP PC {
 
     PARTS:
     // Put your code here:
+
+    // Incrementor
+    Inc16(in=oIn,out=oInPlus);
+    
+    // Assume that Reset > Load > Increment
+    // Mux out what to input to the Register
+    Mux16(a=oInPlus,b=in,sel=load,out=inFbLoad);
+    Mux16(a=inFbLoad,b=false,sel=reset,out=in4Reg);
+
+    //Determine if we load
+    Or(a=reset,b=load,out=l1);
+    Or(a=l1,b=inc,out=myL);
+    
+    //Give the register
+    Register(in=in4Reg,load=myL,out=oIn,out=out);
 }
