@@ -40,4 +40,48 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+
+    // Reg A Input Mux
+    Mux16(a=instruction,b=oldM,sel=instruction[15],out=toA);
+
+    // Reg A
+    ARegister(in=toA,load=loadRegA,out=regAOut,
+        out[0..14]=addressM,out[0..14]=newAddress);
+
+    // Reg D
+    DRegister(in=oldM,load=loadRegD,out=regDOut);
+
+    // ALU A/M Input Mux
+    Mux16(a=regAOut,b=inM,sel=passInM,out=toAMInput);
+
+    // Program Counter
+    PC(in[0..14]=newAddress,in[15]=false,load=loadJump,
+        inc=incPC,reset=reset,out[0..14]=pc);
+
+    // ALU
+    ALU(x=regDOut,y=toAMInput,zx=instruction[11],nx=instruction[10],
+        zy=instruction[9],ny=instruction[8],f=instruction[7],
+        no=instruction[6],out=outM,out=oldM,zr=zr,ng=ng);
+
+    // Control Logic
+    Not(in=instruction[15],out=loadInValue);
+    Or(a=loadInValue,b=instruction[5],out=loadRegA);
+    And(a=instruction[15],b=instruction[4],out=loadRegD);
+    And(a=instruction[15],b=instruction[3],out=writeM);
+
+    And(a=instruction[15],b=instruction[12],out=passInM);
+
+    // Figure out whether to load the Jump or increment.
+    Or(a=ng,b=zr,out=LTE);
+    Not(in=LTE,out=GT);
+
+    And(a=instruction[0],b=GT,out=JmpGT);
+    And(a=instruction[1],b=zr,out=JmpEQ);
+    And(a=instruction[2],b=ng,out=JmpLT);
+
+    Or(a=JmpLT,b=JmpEQ,out=JmpLTE);
+    Or(a=JmpLTE,b=JmpGT,out=jumpBit);
+    
+    And(a=jumpBit,b=instruction[15],out=loadJump);
+    Not(in=loadJump,out=incPC);
 }
