@@ -1,0 +1,14 @@
+// BlockCrush (C) Jakob Wells
+// Main.jack
+// Basically just makes an underlying "game" object and starts it.
+
+class Main {
+	function void main() {
+		var BCGame newGame;
+		let newGame = BCGame.new();
+		do newGame.run();
+		do newGame.dispose();
+
+		return;
+	}
+}
