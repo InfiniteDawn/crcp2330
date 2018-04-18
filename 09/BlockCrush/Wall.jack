@@ -1,0 +1,59 @@
+// BlockCrush (C) Jakob Wells
+// Wall.jack
+// Wall object. 1-tile gap with rng height.
+
+class Wall {
+	
+	field int gapY = 0;
+	field int gapX = 15;
+
+
+	/* Constructs a new Wall object given a gap position */
+	constructor Wall new(int newY, int newX) {
+		let gapY = newY;
+		let gapX = newX; // Always starts off-screen, so no reason to draw yet.
+
+		return this;
+	}
+
+	/* Deallocate memory associated with this object */
+	method void dispose () {
+		do deAlloc(this);
+		return;
+	}
+
+	/* Update the object position on screen, returns "true" when object reaches floor level */
+	method boolean update () {
+		let gapX = gapX - 1;
+
+		if (gapX = 0) {
+			return true;
+		}
+		else {
+			return false; // An Out-of-Range value that denotes this wall hasn't reached the left yet.
+		}
+	}
+
+	/* Return the position of the gap for "collision detection" purposes */
+	method int getY () {
+		return gapY;
+	}
+
+	/* Takes in a new gap position and moves wall to its initial X position */
+	method void respawn (int newY) {
+		let gapY = newY;
+		let gapX = 15; // Always spawns *just* off-screen for next update.
+
+		return;
+	}
+
+	/* Draws the wall to the screen, black for solid parts, white for the gap. */
+	function void draw () {
+		if ((gapX >= 0) & (gapX <= 14)) {
+			do Screen.setColor(true);
+			do Screen.drawRectangle(gapX,0,gapX+32,256);
+			do Screen.setColor(false);
+			do Screen.drawRectangle(gapX,gapY,gapX+32,gapY+32);
+		}
+	}
+}

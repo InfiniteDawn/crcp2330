@@ -1,0 +1,12 @@
+// BlockCrush (C) Jakob Wells
+// BCGame.jack
+// Game object for BlockCrush. Keeps track of internal objects, handles
+// inputs, graphics, score, etc.
+
+// Game Concept: Player block moves up/down on the left side of the 
+// screen as walls of blocks move down the screen to "crush" them. Gain 
+// points by slipping into gaps in the wall as the walls get faster.
+
+class BCGame {
+	field Wall //... well I should make these objects first
+}
