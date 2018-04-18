@@ -11,16 +11,59 @@ class BCGame {
 	field Array walls;
 	field Block player;
 	field Score score;
+	field int rngCounter;
 
 	/* Constructs a new Wall object given a gap position */
 	constructor BCGame new() {
-		let walls = Array.new(5);
-		let walls[0] = Wall()
-
 		return this;
 	}
 
-	function int mod(int a, int b) {
+	method void start() {
+		var int tmp; 
+		let rngCounter = 0;
+		do Output.moveCursor(5,10);
+		do Output.printString("Press any key");
 
+		while(true) {
+			let rngCounter = rngCounter + 1;
+
+			let tmp = Keyboard.keyPressed();
+
+			if (~(tmp = 0)) {
+				do gameSetup();
+				do gameLoop();
+			}
+		}
+	}
+
+	function void gameSetup() {
+		do Screen.clearScreen();
+
+		let walls = Array.new(5);
+		let walls[0] = Wall.new(wallYGen(7),15);
+		let walls[1] = Wall.new(wallYGen(6),19);
+		let walls[2] = Wall.new(wallYGen(5),23);
+		let walls[3] = Wall.new(wallYGen(4),27);
+		let walls[4] = Wall.new(wallYGen(3),31);
+
+		let player = Block.new(4);
+
+		let score = Scoreboard.new(0);
+
+		do player.draw();
+		do score.draw();
+
+		return;
+	}
+
+	
+
+	function int wallYGen(int seed){
+		let rngCounter = rngCounter + seed;
+		Return mod(rngCounter * seed,7);
+	}
+
+	function int mod(int a, int b) {
+		Return a - ((a / b) * b);
 	}
 }

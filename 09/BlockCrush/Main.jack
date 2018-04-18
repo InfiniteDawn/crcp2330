@@ -6,7 +6,7 @@ class Main {
 	function void main() {
 		var BCGame newGame;
 		let newGame = BCGame.new();
-		do newGame.run();
+		do newGame.start();
 		do newGame.dispose();
 
 		return;
