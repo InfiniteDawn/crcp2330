@@ -8,5 +8,19 @@
 // points by slipping into gaps in the wall as the walls get faster.
 
 class BCGame {
-	field Wall //... well I should make these objects first
+	field Array walls;
+	field Block player;
+	field Score score;
+
+	/* Constructs a new Wall object given a gap position */
+	constructor BCGame new() {
+		let walls = Array.new(5);
+		let walls[0] = Wall()
+
+		return this;
+	}
+
+	function int mod(int a, int b) {
+
+	}
 }

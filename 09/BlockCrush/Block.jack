@@ -1,0 +1,49 @@
+// BlockCrush (C) Jakob Wells
+// Block.jack
+// Character object. Controls are supplied by game object, position is tracked by Block.
+
+class Block {
+	
+	field int posY = 0;
+
+
+	/* Constructs a new Block object given a Y position */
+	constructor Block new(int newY) {
+		let posY = newY;
+
+		return this;
+	}
+
+	/* Deallocate memory associated with this object */
+	method void dispose () {
+		do deAlloc(this);
+		return;
+	}
+
+	/* Move Block up. Prevents movement off-screen */
+	method void moveUp () {
+		if (posY > 0) {
+			let posY = posY - 1;
+		}
+	}
+	
+	/* Move Block down. Prevents movement off-screen */
+	method void moveDown () {
+		if (posY < 7) {
+			let posY = posY + 1;
+		}
+	}
+
+	/* Return the position of the Block for "collision detection" purposes */
+	method int getY () {
+		return posY;
+	}
+
+	/* Draws the Block to the screen as a black box */
+	function void draw () {
+		do Screen.setColor(true);
+		do Screen.drawRectangle(0,posY,32,posY+32);
+		do Screen.setColor(false);
+		do Screen.drawRectangle(4,posY+4,28,posY+28);
+	}
+}
