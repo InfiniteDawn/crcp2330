@@ -42,7 +42,7 @@ class Wall {
 	/* Takes in a new gap position and moves wall to its initial X position */
 	method void respawn (int newY) {
 		let gapY = newY;
-		let gapX = 15; // Always spawns *just* off-screen for next update.
+		let gapX = 16; // Always spawns *just* off-screen for next update.
 
 		return;
 	}
