@@ -56,7 +56,37 @@ class BCGame {
 		return;
 	}
 
-	
+	function void gameLoop(){
+		var int gameCntr;
+		let gameCntr = 0;
+
+		var bool keyHeld;
+		let keyHeld = false;
+		while(true) {
+			var int key;
+			let key = Keyboard.keyPressed();
+
+			if(~(key = 0)){				// Key Pressed?
+				if(keyHeld = false){	// Has the key been let go recently?
+					if(key = 'w') {		// Is the key pressed "move up" ['w']?
+						do player.moveUp();
+						do player.draw();
+					}
+					if(key = 's') {		// Is the key pressed "move down" ['s']?
+						do player.moveDown();
+						do player.draw();
+					}
+				}
+			}
+			else {
+				keyHeld = false;		// No key pressed, so set held->0;
+			}	
+
+			if
+
+
+		}
+	}
 
 	function int wallYGen(int seed){
 		let rngCounter = rngCounter + seed;

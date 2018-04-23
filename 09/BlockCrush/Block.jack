@@ -11,7 +11,7 @@ class Block {
 	constructor Block new(int newY) {
 		let posY = newY;
 
-		return this;
+		Return this;
 	}
 
 	/* Deallocate memory associated with this object */
@@ -25,6 +25,7 @@ class Block {
 		if (posY > 0) {
 			let posY = posY - 1;
 		}
+		return;
 	}
 	
 	/* Move Block down. Prevents movement off-screen */
@@ -32,11 +33,12 @@ class Block {
 		if (posY < 7) {
 			let posY = posY + 1;
 		}
+		return;
 	}
 
 	/* Return the position of the Block for "collision detection" purposes */
 	method int getY () {
-		return posY;
+		Return posY;
 	}
 
 	/* Draws the Block to the screen as a black box */
@@ -45,5 +47,7 @@ class Block {
 		do Screen.drawRectangle(0,posY,32,posY+32);
 		do Screen.setColor(false);
 		do Screen.drawRectangle(4,posY+4,28,posY+28);
+
+		return;
 	}
 }
