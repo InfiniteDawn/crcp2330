@@ -43,25 +43,24 @@ class Wall {
 	/* Takes in a new gap position and moves wall to its initial X position */
 	method void respawn (int newY) {
 		let gapY = newY;
-		let gapX = 16; // Always spawns *just* off-screen for next update.
+		let gapX = 15; // Always spawns *just* off-screen for next update.
 
 		return;
 	}
 
 	/* Draws the wall to the screen, black for solid parts, white for the gap. */
 	method void drawUpdate () {
-		if ((gapX > -1) & (gapX < 15)) {
+		if (gapX < 15) {
 
 			// Clear the old wall graphic (if needed)
 			if (gapX < 14) {
 				do Screen.setColor(false);
-				do Screen.drawRectangle(gapX*32+31,0,gapX*32+63,255);
+				do Screen.drawRectangle((gapX + 2)*32,0,(gapX + 3)*32 - 1,255);
 			}
 			// Draw the new wall graphic
 			do Screen.setColor(true);
-			do Screen.drawRectangle(gapX*32,0,gapX*32+31,255);
-			do Screen.setColor(false);
-			do Screen.drawRectangle(gapX*32,gapY*32,gapX*32+31,gapY*32+31);
+			do Screen.drawRectangle((gapX + 1)*32,0,(gapX + 2)*32 - 1,gapY*32);
+			do Screen.drawRectangle((gapX + 1)*32,(gapY + 1)*32,(gapX + 2)*32 - 1,255);
 		}
 
 		return;

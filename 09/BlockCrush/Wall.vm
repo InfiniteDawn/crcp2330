@@ -50,7 +50,7 @@ push argument 0
 pop pointer 0
 push argument 1
 pop this 0
-push constant 16
+push constant 15
 pop this 1
 push constant 0
 return
@@ -58,13 +58,8 @@ function Wall.drawUpdate 0
 push argument 0
 pop pointer 0
 push this 1
-push constant 1
-neg
-gt
-push this 1
 push constant 15
 lt
-and
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
@@ -78,16 +73,18 @@ push constant 0
 call Screen.setColor 1
 pop temp 0
 push this 1
+push constant 2
+add
 push constant 32
 call Math.multiply 2
-push constant 31
-add
 push constant 0
 push this 1
+push constant 3
+add
 push constant 32
 call Math.multiply 2
-push constant 63
-add
+push constant 1
+sub
 push constant 255
 call Screen.drawRectangle 4
 pop temp 0
@@ -97,36 +94,41 @@ not
 call Screen.setColor 1
 pop temp 0
 push this 1
+push constant 1
+add
 push constant 32
 call Math.multiply 2
 push constant 0
 push this 1
+push constant 2
+add
 push constant 32
 call Math.multiply 2
-push constant 31
-add
-push constant 255
+push constant 1
+sub
+push this 0
+push constant 32
+call Math.multiply 2
 call Screen.drawRectangle 4
 pop temp 0
-push constant 0
-call Screen.setColor 1
-pop temp 0
 push this 1
+push constant 1
+add
 push constant 32
 call Math.multiply 2
 push this 0
+push constant 1
+add
 push constant 32
 call Math.multiply 2
 push this 1
+push constant 2
+add
 push constant 32
 call Math.multiply 2
-push constant 31
-add
-push this 0
-push constant 32
-call Math.multiply 2
-push constant 31
-add
+push constant 1
+sub
+push constant 255
 call Screen.drawRectangle 4
 pop temp 0
 label IF_FALSE0

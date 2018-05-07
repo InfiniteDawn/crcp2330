@@ -14,7 +14,7 @@ class Scoreboard {
 		do Screen.setColor(true);
 		do Screen.drawRectangle(0,0,31,255);
 		do Screen.setColor(false);
-		do Scrren.drawRectangle(4,4,27,251);
+		do Screen.drawRectangle(4,4,27,251);
 
 		return this;
 	}

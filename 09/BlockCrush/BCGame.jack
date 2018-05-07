@@ -11,8 +11,6 @@ class BCGame {
 	field Wall wall1;
 	field Wall wall2;
 	field Wall wall3;
-	field Wall wall4;
-	field Wall wall5;
 	field Block player;
 	field Scoreboard score;
 	field int rngCounter;
@@ -58,10 +56,8 @@ class BCGame {
 		do Screen.clearScreen();
 
 		let wall1 = Wall.new(wallYGen(7),15);
-		let wall2 = Wall.new(wallYGen(6),19);
-		let wall3 = Wall.new(wallYGen(5),23);
-		let wall4 = Wall.new(wallYGen(4),27);
-		let wall5 = Wall.new(wallYGen(3),31);
+		let wall2 = Wall.new(wallYGen(6),20);
+		let wall3 = Wall.new(wallYGen(5),25);
 
 		let player = Block.new(4);
 
@@ -80,7 +76,7 @@ class BCGame {
 		var int playY;
 
 
-		let gameCntr = 0;
+		let gameCntr = 30000;
 		let keyHeld = false;
 
 		while(true) {
@@ -88,14 +84,15 @@ class BCGame {
 
 			if(~(key = 0)){				// Key Pressed?
 				if(keyHeld = false){	// Has the key been let go recently?
-					if(key = 119) {		// Is the key pressed "move up" ['w']?
+					if(key = 87) {		// Is the key pressed "move up" ['w']?
 						do player.moveUp();
 						let rngCounter = rngCounter + 1;
+						let keyHeld = true;
 					}
-					if(key = 115) {		// Is the key pressed "move down" ['s']?
+					if(key = 83) {		// Is the key pressed "move down" ['s']?
 						do player.moveDown();
 						let rngCounter = rngCounter + 1;
-
+						let keyHeld = true;
 					}
 				}
 			}
@@ -103,11 +100,9 @@ class BCGame {
 				let keyHeld = false;		// No key pressed, so set held->0;
 			}	
 
-			let gameSpeed = 50 - (score.getScore()/10);
-
-			if(mod(gameCntr,gameSpeed) = 0) {
+			if(gameCntr = 0) {
 				let i = 0;
-				while(i < 5) { 		// Actually a For loop. Odd this doesn't implement those.
+				while(i < 3) { 		// Actually a For loop. Odd this doesn't implement those.
 					let metFloor = wallDrop(i);
 
 					if(metFloor = true) {	// Game over? Or Score++?
@@ -117,6 +112,7 @@ class BCGame {
 						if(wallY = playY){
 							do score.increase();
 							do wallRespawn(i);
+							do player.drawUpdate();
 						}
 						else {				// GAME OVER!
 							do gameOver();	// Times up, clean up the game.
@@ -126,9 +122,11 @@ class BCGame {
 
 					let i = i + 1;
 				}
+				
+				let gameCntr = 30000 - (score.getScore() * 10);
 			}
 
-			let gameCntr = gameCntr + 1;
+			let gameCntr = gameCntr - 1;
 		}
 
 		return;
@@ -144,12 +142,7 @@ class BCGame {
 		if (index = 2){
 			return wall3.fall();
 		}
-		if (index = 3){
-			return wall4.fall();
-		}
-		if (index = 4){
-			return wall5.fall();
-		}
+
 		return false;
 	}
 
@@ -163,13 +156,8 @@ class BCGame {
 		if (index = 2){
 			return wall3.getY();
 		}
-		if (index = 3){
-			return wall4.getY();
-		}
-		if (index = 4){
-			return wall5.getY();
-		}
-		return false;
+
+		return 0;
 	}
 
 	method void wallRespawn(int index){
@@ -182,12 +170,7 @@ class BCGame {
 		if (index = 2){
 			do wall3.respawn(wallYGen(score.getScore()));
 		}
-		if (index = 3){
-			do wall4.respawn(wallYGen(score.getScore()));
-		}
-		if (index = 4){
-			do wall5.respawn(wallYGen(score.getScore()));
-		}
+
 		return;
 	}
 
@@ -201,7 +184,10 @@ class BCGame {
 		do Output.moveCursor(5,10);
 		do Output.printString("Press any key");
 
-		do walls.dispose();
+		do wall1.dispose();
+		do wall2.dispose();
+		do wall3.dispose();
+
 		do player.dispose();
 		do score.dispose();
 
@@ -210,8 +196,17 @@ class BCGame {
 
 	/* Helper funciton to get a psuedo-random value from game conditions */
 	method int wallYGen(int seed){
+		var int output;
 		let rngCounter = rngCounter + seed;
-		return mod(rngCounter * seed,7);
+		let output = mod(rngCounter * seed,8);
+		if (output < 0) {
+			let output = 0;
+		}
+		if (output > 7) {
+			let output = 7;
+		}
+
+		return output;
 	}
 
 	/* Helper function for taking the modulus of two values */
