@@ -1,0 +1,49 @@
+// BlockCrush (C) Jakob Wells
+// Scoreboard.jack
+// Scoreboard object. Features the ability to draw to the screen in a binary-like pattern.
+
+class Scoreboard {
+	
+	field int score = 0;
+
+
+	/* Constructs a new Scoreboard object */
+	constructor new() {
+		do Screen.setColor(true);
+		do Screen.drawRectangle(0,0,31,255);
+		do Screen.setColor(false);
+		do Scrren.drawRectangle(4,4,27,251);
+
+		Return this;
+	}
+
+	/* Deallocate memory associated with this object */
+	method void dispose () {
+		do deAlloc(this);
+		return;
+	}
+
+	/* Increase Score counter */
+	method void increase() {
+		let score = score + 1;
+		do drawUpdate();
+		return;
+	}
+
+	/* Return the score */
+	method int getScore () {
+		Return score;
+	}
+
+	/* Draws the scoreboard changes to screen */
+	function void drawUpdate () {
+
+		// Adds a tickmark to the score if the max hasn't been reached.
+		if(score <= 240){
+			do Screen.setColor(true);
+			do Screen.drawRectangle(8,248 - score,23,248 - score);
+		}
+
+		return;
+	}
+}

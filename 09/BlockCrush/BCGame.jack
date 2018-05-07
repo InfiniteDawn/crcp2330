@@ -31,6 +31,10 @@ class BCGame {
 		do Output.printString("BLOCK CRUSH");
 		do Output.moveCursor(5,10);
 		do Output.printString("Press any key");
+		do Output.moveCursor(7,5);
+		do Output.printString("Press W and S to move up and down.");
+		do Output.moveCursor(8,5);
+		do Output.printString("  Avoid walls to increase score.  ");
 
 		while(true) {
 			let rngCounter = rngCounter + 1;
@@ -72,6 +76,7 @@ class BCGame {
 
 		var bool keyHeld;
 		let keyHeld = false;
+
 		while(true) {
 			var int key;
 			let key = Keyboard.keyPressed();
@@ -125,9 +130,10 @@ class BCGame {
 			}
 
 			do gameDraw();
-
-
+			let gameCntr = gameCntr + 1;
 		}
+
+		return;
 	}
 
 	/* Draws the gameboard all at once. */
@@ -135,11 +141,8 @@ class BCGame {
 		do Screen.clearScreen();
 		do player.draw();
 		do score.draw();
-		do walls[0].draw();
-		do walls[1].draw();
-		do walls[2].draw();
-		do walls[3].draw();
-		do walls[4].draw();
+
+		return;
 	}
 
 	/* Wipe the screen, delete game objects, and setup for the "title" again */
@@ -155,6 +158,8 @@ class BCGame {
 		do walls.dispose();
 		do player.dispose();
 		do score.dispose();
+
+		return;
 	}
 
 	/* Helper funciton to get a psuedo-random value from game conditions */

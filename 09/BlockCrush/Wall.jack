@@ -25,6 +25,7 @@ class Wall {
 	/* Update the object position on screen, returns "true" when object reaches floor level */
 	method boolean fall () {
 		let gapX = gapX - 1;
+		do drawUpdate();
 
 		if (gapX = 0) {
 			Return true;
@@ -48,12 +49,19 @@ class Wall {
 	}
 
 	/* Draws the wall to the screen, black for solid parts, white for the gap. */
-	function void draw () {
+	function void drawUpdate () {
 		if ((gapX >= 0) & (gapX <= 14)) {
+
+			// Clear the old wall graphic (if needed)
+			if (gapX <= 13) {
+				do Screen.setColor(false);
+				do Screen.drawRectangle(gapX*32+31,0,gapX*32+63,255);
+			}
+			// Draw the new wall graphic
 			do Screen.setColor(true);
-			do Screen.drawRectangle(gapX,0,gapX+32,256);
+			do Screen.drawRectangle(gapX*32,0,gapX*32+31,255);
 			do Screen.setColor(false);
-			do Screen.drawRectangle(gapX,gapY,gapX+32,gapY+32);
+			do Screen.drawRectangle(gapX*32,gapY*32,gapX*32+31,gapY*32+31);
 		}
 
 		return;

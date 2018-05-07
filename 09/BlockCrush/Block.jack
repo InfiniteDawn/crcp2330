@@ -10,6 +10,7 @@ class Block {
 	/* Constructs a new Block object given a Y position */
 	constructor Block new(int newY) {
 		let posY = newY;
+		do drawUpdate();
 
 		Return this;
 	}
@@ -24,6 +25,7 @@ class Block {
 	method void moveUp () {
 		if (posY > 0) {
 			let posY = posY - 1;
+			do drawUpdate();
 		}
 		return;
 	}
@@ -32,6 +34,7 @@ class Block {
 	method void moveDown () {
 		if (posY < 7) {
 			let posY = posY + 1;
+			do drawUpdate();
 		}
 		return;
 	}
@@ -42,11 +45,16 @@ class Block {
 	}
 
 	/* Draws the Block to the screen as a black box */
-	function void draw () {
-		do Screen.setColor(true);
-		do Screen.drawRectangle(0,posY,32,posY+32);
+	function void drawUpdate () {
+		// Clear the old box draw.
 		do Screen.setColor(false);
-		do Screen.drawRectangle(4,posY+4,28,posY+28);
+		do Screen.drawRectangle(32,0,63,255);
+
+		// Draw the current box position.
+		do Screen.setColor(true);
+		do Screen.drawRectangle(32,posY*32,63,posY+31);
+		do Screen.setColor(false);
+		do Screen.drawRectangle(4,posY*32+4,27,posY+27);
 
 		return;
 	}
