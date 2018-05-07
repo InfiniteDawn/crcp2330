@@ -1,0 +1,15 @@
+/*  Read Me for BlockCrush
+	
+	Basic Rules of Play:
+
+	Start the game by pressing any key.
+	The objective is to avoid the moving walls for as long as possible.
+	Game ends when the player block is crushed by a wall.
+
+	Move the player block with the "w" and "s" keys.
+
+
+
+	Note: The wall graphics have a hard time keeping up unfortunately. 
+	Probably a limitation of JACK.
+*/
