@@ -4,22 +4,24 @@
 
 class Scoreboard {
 	
-	field int score = 0;
+	field int score;
 
 
 	/* Constructs a new Scoreboard object */
-	constructor new() {
+	constructor Scoreboard new() {
+		let score = 0;
+
 		do Screen.setColor(true);
 		do Screen.drawRectangle(0,0,31,255);
 		do Screen.setColor(false);
 		do Scrren.drawRectangle(4,4,27,251);
 
-		Return this;
+		return this;
 	}
 
 	/* Deallocate memory associated with this object */
 	method void dispose () {
-		do deAlloc(this);
+		do Memory.deAlloc(this);
 		return;
 	}
 
@@ -32,14 +34,14 @@ class Scoreboard {
 
 	/* Return the score */
 	method int getScore () {
-		Return score;
+		return score;
 	}
 
 	/* Draws the scoreboard changes to screen */
-	function void drawUpdate () {
+	method void drawUpdate () {
 
 		// Adds a tickmark to the score if the max hasn't been reached.
-		if(score <= 240){
+		if(score < 241){
 			do Screen.setColor(true);
 			do Screen.drawRectangle(8,248 - score,23,248 - score);
 		}

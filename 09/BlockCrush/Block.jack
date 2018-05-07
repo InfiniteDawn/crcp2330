@@ -4,7 +4,7 @@
 
 class Block {
 	
-	field int posY = 0;
+	field int posY;
 
 
 	/* Constructs a new Block object given a Y position */
@@ -12,12 +12,12 @@ class Block {
 		let posY = newY;
 		do drawUpdate();
 
-		Return this;
+		return this;
 	}
 
 	/* Deallocate memory associated with this object */
 	method void dispose () {
-		do deAlloc(this);
+		do Memory.deAlloc(this);
 		return;
 	}
 
@@ -41,11 +41,11 @@ class Block {
 
 	/* Return the position of the Block for "collision detection" purposes */
 	method int getY () {
-		Return posY;
+		return posY;
 	}
 
 	/* Draws the Block to the screen as a black box */
-	function void drawUpdate () {
+	method void drawUpdate () {
 		// Clear the old box draw.
 		do Screen.setColor(false);
 		do Screen.drawRectangle(32,0,63,255);

@@ -4,8 +4,8 @@
 
 class Wall {
 	
-	field int gapY = 0;
-	field int gapX = 15;
+	field int gapY;
+	field int gapX;
 
 
 	/* Constructs a new Wall object given a gap position */
@@ -13,12 +13,12 @@ class Wall {
 		let gapY = newY;
 		let gapX = newX; // Always starts off-screen, so no reason to draw yet.
 
-		Return this;
+		return this;
 	}
 
 	/* Deallocate memory associated with this object */
 	method void dispose () {
-		do deAlloc(this);
+		do Memory.deAlloc(this);
 		return;
 	}
 
@@ -28,16 +28,16 @@ class Wall {
 		do drawUpdate();
 
 		if (gapX = 0) {
-			Return true;
+			return true;
 		}
 		else {
-			Return false; // An Out-of-Range value that denotes this wall hasn't reached the left yet.
+			return false; // An Out-of-Range value that denotes this wall hasn't reached the left yet.
 		}
 	}
 
 	/* Return the position of the gap for "collision detection" purposes */
 	method int getY () {
-		Return gapY;
+		return gapY;
 	}
 
 	/* Takes in a new gap position and moves wall to its initial X position */
@@ -49,11 +49,11 @@ class Wall {
 	}
 
 	/* Draws the wall to the screen, black for solid parts, white for the gap. */
-	function void drawUpdate () {
-		if ((gapX >= 0) & (gapX <= 14)) {
+	method void drawUpdate () {
+		if ((gapX > -1) & (gapX < 15)) {
 
 			// Clear the old wall graphic (if needed)
-			if (gapX <= 13) {
+			if (gapX < 14) {
 				do Screen.setColor(false);
 				do Screen.drawRectangle(gapX*32+31,0,gapX*32+63,255);
 			}

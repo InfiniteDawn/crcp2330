@@ -1,0 +1,78 @@
+function Scoreboard.new 0
+push constant 1
+call Memory.alloc 1
+pop pointer 0
+push constant 0
+pop this 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 0
+push constant 0
+push constant 31
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push constant 4
+push constant 4
+push constant 27
+push constant 251
+call Scrren.drawRectangle 4
+pop temp 0
+push pointer 0
+return
+function Scoreboard.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Scoreboard.increase 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 1
+add
+pop this 0
+push pointer 0
+call Scoreboard.drawUpdate 1
+pop temp 0
+push constant 0
+return
+function Scoreboard.getScore 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Scoreboard.drawUpdate 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 241
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 8
+push constant 248
+push this 0
+sub
+push constant 23
+push constant 248
+push this 0
+sub
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE0
+push constant 0
+return
