@@ -7,12 +7,22 @@
 import Code; # For use in "translating"
 
 class Parser:
-	def __init__(self,fileInput):
-		self.file = fileInput;
-		self.comIndex = -1; # Start a -1 index - first advance will enter the list.
-		self.curCom = "";
-		self.coms = [];
+	# Make a symbol whitelist - anything that uses characters 
+	# outside this whitelist will throw a parsing error.
+	symbolWhitelist = set('abcdefghijklmnopqrstuvwxyz' +
+						  'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 
+						  '1234567890_.$:');
+	# Index within command list. Initialized to -1 so it
+	# requires an initial advance() to enter the list proper
+	comIndex = -1;
+	# Temporary container for currently parsing command
+	curCom = "";
+	# List for instructions
+	coms = [];
 
+	# Initialize by loading in the file as a list of instructions
+	def __init__(self,fileInput):
+		
 		# Retrieve all commands for easy access in list form.
 		with open(fileInput) as file:
 			# Dump file into a list of lines
@@ -20,53 +30,59 @@ class Parser:
 			# Clear whitespace. Filter out empty lines and comments
 			for l in temp:
 				if (l.strip() != "" and "//" not in l):
-					self.coms.append(l.strip());
+					coms.append(l.strip());
 
-
+	# Check if the instruction list still has more left to go
 	def hasMoreCommands(self):
-		if (self.comIndex < len(self.coms) - 1):
+		if (comIndex < len(coms) - 1):
 			return True;
 		else:
 			return False;
 
+	# Move up the current instruction
 	def advance(self):
-		self.comIndex += 1;
-		self.curCom = self.coms[self.comIndex];
-		print(str(self.comIndex) + " : " + self.curCom);
+		comIndex += 1;
+		curCom = coms[comIndex];
+		# print(str(comIndex) + " : " + curCom);
 
+	# Check what kind of instruction the current command is
 	def commandType(self):
-		if(self.curCom[0] == '@'):
+		if(curCom[0] == '@'):
 			return "A_COMMAND";
 		
-		elif(self.curCom[0] == "("):
+		elif(curCom[0] == "("):
 			return "L_COMMAND";
 		
 		else:
 			return "C_COMMAND";
-		
 
-	def symbol():
-		outSym = "";
+	# Pull the symbol/constant out of an A or L command
+	def symbol(self):
+		# 
+
 
 		pass; # Insert Code
 
 		return outSym;
 
-	def dest():
+	# Pull the Destination component out of a C command
+	def dest(self):
 		outDest = "";
 
 		pass; # Insert Code
 
 		return outDest;
 
-	def comp():
+	# Pull the Computation component out of a C command
+	def comp(self):
 		outComp = "";
 
 		pass; # Insert Code
 
 		return outComp;
 
-	def jump():
+	# Pull the Jump component out of a C command
+	def jump(self):
 		outJump = "";
 
 		pass; # Insert Code
