@@ -58,33 +58,41 @@ class Parser:
 
 	# Pull the symbol/constant out of an A or L command
 	def symbol(self):
-		# 
-
-
-		pass; # Insert Code
-
-		return outSym;
+		# Remove the @ and parenthesis to expose the symbol/constant
+		return curCom.translate(None,'@()');
 
 	# Pull the Destination component out of a C command
 	def dest(self):
-		outDest = "";
-
-		pass; # Insert Code
-
-		return outDest;
+		# Check if there *is* a dest in the command
+		if '=' in curCom:
+			# Split the command at the equal sign and take the first part.
+			outDest = curCom.split('=')[0];
+			return outDest;
+		else:
+			return "";
 
 	# Pull the Computation component out of a C command
 	def comp(self):
-		outComp = "";
+		outComp = curCom;
+		# Check if there is a dest in the command
+		if '=' in outComp:
+			# Remove the dest component.
+			outComp = outcomp.split('=')[1];
+			
+		# Check if there is a jump in the command
+		if ';' in outComp:
+			# Remove the jump component.
+			outComp = outcomp.split(';')[0];
 
-		pass; # Insert Code
-
+		# Return whatever is left at this point - it should be the comp.
 		return outComp;
 
 	# Pull the Jump component out of a C command
 	def jump(self):
-		outJump = "";
-
-		pass; # Insert Code
-
-		return outJump;
+		# Check if there *is* a jump in the command
+		if ';' in curCom:
+			# Split the command at the semicolon and take the second part.
+			outJump = curCom.split(';')[1];
+			return outJump;
+		else:
+			return "";
