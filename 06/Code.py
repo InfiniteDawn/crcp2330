@@ -22,25 +22,25 @@ class Code:
 					 ("JLT","100"),("JNE","101"),("JLE","110"),("JMP","111")]);
 
 	# Returns a 3-bit code corresponding to the input
-	def dest(inDest):
-		if inDest in destDict:
-			return destDict[inDest];
+	def dest(self,inDest):
+		if inDest in self.destDict:
+			return self.destDict[inDest];
 		else:
 			print("ERROR - Dest Not Recognized");
 			return None;
 
 	# Returns a 7-bit code corresponding to the input
-	def comp(inComp):
-		if inComp in compDict:
-			return compDict[inComp];
+	def comp(self,inComp):
+		if inComp in self.compDict:
+			return self.compDict[inComp];
 		else:
 			print("ERROR - Comp Not Recognized");
 			return None;
 
 	# Returns a 3-bit code corresponding to the input
-	def jump(inJump):
-		if inJump in jumpDict:
-			return jumpDict[inJump];
+	def jump(self,inJump):
+		if inJump in self.jumpDict:
+			return self.jumpDict[inJump];
 		else:
 			print("ERROR - Jump Not Recognized");
 			return None;

@@ -4,14 +4,7 @@
 #
 #	Parser.py - Handles input parsing.
 
-import Code; # For use in "translating"
-
 class Parser:
-	# Make a symbol whitelist - anything that uses characters 
-	# outside this whitelist will throw a parsing error.
-	symbolWhitelist = set('abcdefghijklmnopqrstuvwxyz' +
-						  'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 
-						  '1234567890_.$:');
 	# Index within command list. Initialized to -1 so it
 	# requires an initial advance() to enter the list proper
 	comIndex = -1;
@@ -30,27 +23,28 @@ class Parser:
 			# Clear whitespace. Filter out empty lines and comments
 			for l in temp:
 				if (l.strip() != "" and "//" not in l):
-					coms.append(l.strip());
+					print(l.strip());
+					self.coms.append(l.strip());
 
 	# Check if the instruction list still has more left to go
 	def hasMoreCommands(self):
-		if (comIndex < len(coms) - 1):
+		if (self.comIndex < len(self.coms) - 1):
 			return True;
 		else:
 			return False;
 
 	# Move up the current instruction
 	def advance(self):
-		comIndex += 1;
-		curCom = coms[comIndex];
+		self.comIndex += 1;
+		self.curCom = self.coms[self.comIndex];
 		# print(str(comIndex) + " : " + curCom);
 
 	# Check what kind of instruction the current command is
 	def commandType(self):
-		if(curCom[0] == '@'):
+		if(self.curCom[0] == '@'):
 			return "A_COMMAND";
 		
-		elif(curCom[0] == "("):
+		elif(self.curCom[0] == "("):
 			return "L_COMMAND";
 		
 		else:
@@ -59,30 +53,32 @@ class Parser:
 	# Pull the symbol/constant out of an A or L command
 	def symbol(self):
 		# Remove the @ and parenthesis to expose the symbol/constant
-		return curCom.translate(None,'@()');
+		outSym = self.curCom.translate(None,'@()');
+		print(outSym);
+		return outSym;
 
 	# Pull the Destination component out of a C command
 	def dest(self):
 		# Check if there *is* a dest in the command
-		if '=' in curCom:
+		if '=' in self.curCom:
 			# Split the command at the equal sign and take the first part.
-			outDest = curCom.split('=')[0];
+			outDest = self.curCom.split('=')[0];
 			return outDest;
 		else:
 			return "";
 
 	# Pull the Computation component out of a C command
 	def comp(self):
-		outComp = curCom;
+		outComp = self.curCom;
 		# Check if there is a dest in the command
 		if '=' in outComp:
 			# Remove the dest component.
-			outComp = outcomp.split('=')[1];
-			
+			outComp = outComp.split('=')[1];
+
 		# Check if there is a jump in the command
 		if ';' in outComp:
 			# Remove the jump component.
-			outComp = outcomp.split(';')[0];
+			outComp = outComp.split(';')[0];
 
 		# Return whatever is left at this point - it should be the comp.
 		return outComp;
@@ -90,9 +86,9 @@ class Parser:
 	# Pull the Jump component out of a C command
 	def jump(self):
 		# Check if there *is* a jump in the command
-		if ';' in curCom:
+		if ';' in self.curCom:
 			# Split the command at the semicolon and take the second part.
-			outJump = curCom.split(';')[1];
+			outJump = self.curCom.split(';')[1];
 			return outJump;
 		else:
 			return "";
