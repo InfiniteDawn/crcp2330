@@ -94,5 +94,5 @@ class Parser:
 	# This function is not defined by the book, but my implementation makes it
 	# easier to just go through the list again rather than bother with dealing
 	# with the actual input file a second time (as a plus, comments are pre-deleted).
-	def resetParser():
+	def resetParser(self):
 		self.curCom = -1;

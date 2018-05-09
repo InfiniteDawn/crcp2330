@@ -3,6 +3,9 @@
 #	Written for Python 2.7.12 (the version that came with Ubuntu)
 #
 #	Assembler.py - Driver for Assembler program.
+#
+#	It is assumed that the .asm file provided is without error - 
+#	invalid programs may produce unpredictable results from this assembler
 
 from Parser import Parser
 from Code import Code
@@ -13,17 +16,63 @@ class Assembler:
 	def assemble(self,fileInput):
 		parser = Parser(fileInput);
 		code = Code();
+		symtab = SymbolTable();
 
-		symbols = self.firstPass(parser,code);
+		# Run the first pass to handle labels.
+		self.firstPass(parser,symtab);
 
-		output = self.secondPass(parser,code,symbols);
+		# Reset the parser index for the second pass.
+		parser.resetParser();
+
+		# Run the second pass to assembly the code, with labels included.
+		output = self.secondPass(parser,code,symtab);
 
 		# Write the assembled binary code to a file named [filename].hack
 		with open(fileInput[:-3] + "hack",'w') as file:
 			for line in output:
 				file.write("%s\n" % line);
+		return;
 
-	def secondPass(self, parser, code):
+	def firstPass(self,parser,symtab):
+		programCounter = 0;
+		memoryCounter = 16;
+
+		while(parser.hasMoreCommands()):
+			parser.advance();
+
+			curType = parser.commandType();
+
+			if (curType == "A_COMMAND"):
+				symbol = parser.symbol();
+
+				if self.isConstant(symbol):
+					# Its not a label, so we can ignore it for now.
+					pass;
+				else:
+					# Check if the symbol is in the symbol table yet.
+					if not symtab.contains(symbol):
+						# Add symbol to this table, at the smallest available memory location
+						symtab.addEntry(symbol,memoryCounter);
+						memoryCounter += 1;
+
+				programCounter += 1;
+
+			elif (curType == "L_COMMAND"):
+				label = parser.symbol();
+
+				# Check if the label is currently in the table
+				# Assume a currently present label is ignored.
+				if not symtab.contains(symbol):
+					# Add symbol to this table, at the current program address
+					symtab.addEntry(symbol,programCounter);
+
+					# Don't increment the program counter for labels!
+				
+			else: # C_COMMAND
+				programCounter += 1;		
+
+
+	def secondPass(self, parser, code, symtab):
 		outputString = []
 		while(parser.hasMoreCommands()):
 			parser.advance();
@@ -37,12 +86,16 @@ class Assembler:
 					# Assemble the binary string for the constant A_COMMAND
 					outputString.append("0"+self.int2Bin(int(symbol)));
 				else:
-					# This is a symbol, not a constant. Ignore it for now.
-					pass;
+					# Pull in whatever value this label corresponds to.
+					value = symtab.getAddress(symbol);
+
+					# Assemble the binary string for the variable A_COMMAND
+					outputString.append("0"+self.int2Bin(value));
+		
 
 			elif (curType == "L_COMMAND"):
-				# No L_COMMANDs in the first iteration. Ignore it for now.
-				pass;
+				pass; # Ignore labels in the second pass.
+
 			else: # C_COMMAND
 				# Gather the peices that are present and convert to binary
 				destPart = code.dest(parser.dest());
@@ -73,7 +126,7 @@ class Assembler:
 
 				
 
-testFile = "Add.asm"; # Stick the test file here!
+testFile = "Max.asm"; # Stick the test file here!
 #testFile = "RectL.asm";
 #testFile = "MaxL.asm";
 #testFile = "PongL.asm";
