@@ -5,15 +5,26 @@
 #	Assembler.py - Driver for Assembler program.
 
 from Parser import Parser
-from Code import Code # For use in "translating"
-#import SymbolTable.py
+from Code import Code
+from SymbolTable import SymbolTable
 
 class Assembler:
 
 	def assemble(self,fileInput):
-		outputString = []
 		parser = Parser(fileInput);
 		code = Code();
+
+		symbols = self.firstPass(parser,code);
+
+		output = self.secondPass(parser,code,symbols);
+
+		# Write the assembled binary code to a file named [filename].hack
+		with open(fileInput[:-3] + "hack",'w') as file:
+			for line in output:
+				file.write("%s\n" % line);
+
+	def secondPass(self, parser, code):
+		outputString = []
 		while(parser.hasMoreCommands()):
 			parser.advance();
 			
@@ -41,10 +52,7 @@ class Assembler:
 				# Assemble the binary string for the C_COMMAND
 				outputString.append("111"+compPart+destPart+jumpPart);
 
-		# Write the assembled binary code to a file named [filename].hack
-		with open(fileInput[:-3] + "hack",'w') as file:
-			for line in outputString:
-				file.write("%s\n" % line);
+		return outputString;
 
 	# Helper function to determine if a A_INSTRUCTION uses a symbol or decimal constant
 	def isConstant(self,inVal):
@@ -65,8 +73,8 @@ class Assembler:
 
 				
 
-#testFile = "Add.asm"; # Stick the test file here!
-testFile = "RectL.asm";
+testFile = "Add.asm"; # Stick the test file here!
+#testFile = "RectL.asm";
 #testFile = "MaxL.asm";
 #testFile = "PongL.asm";
 

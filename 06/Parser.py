@@ -23,7 +23,6 @@ class Parser:
 			# Clear whitespace. Filter out empty lines and comments
 			for l in temp:
 				if (l.strip() != "" and "//" not in l):
-					print(l.strip());
 					self.coms.append(l.strip());
 
 	# Check if the instruction list still has more left to go
@@ -54,7 +53,6 @@ class Parser:
 	def symbol(self):
 		# Remove the @ and parenthesis to expose the symbol/constant
 		outSym = self.curCom.translate(None,'@()');
-		print(outSym);
 		return outSym;
 
 	# Pull the Destination component out of a C command
@@ -92,3 +90,9 @@ class Parser:
 			return outJump;
 		else:
 			return "";
+
+	# This function is not defined by the book, but my implementation makes it
+	# easier to just go through the list again rather than bother with dealing
+	# with the actual input file a second time (as a plus, comments are pre-deleted).
+	def resetParser():
+		self.curCom = -1;
