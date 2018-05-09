@@ -18,7 +18,6 @@ class SymbolTable:
 	# Add a symbol:address pair to the dictionary.
 	def addEntry(self,symbol,address):
 		self.symboltable[symbol] = address;
-		print("Added entry: " + symbol + " : " + str(address));
 		return;
 
 	# Check if a symbol is already recorded.
@@ -29,3 +28,6 @@ class SymbolTable:
 	# Retrieve the address that corresponds to a symbol.
 	def getAddress(self,symbol):
 		return self.symboltable[symbol];
+
+	def printTable(self):
+		print(self.symboltable);

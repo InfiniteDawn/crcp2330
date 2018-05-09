@@ -22,7 +22,13 @@ class Parser:
 			temp = file.readlines();
 			# Clear whitespace. Filter out empty lines and comments
 			for l in temp:
-				if (l.strip() != "" and "//" not in l):
+				# Check if the command includes a comment afterwards
+				if '/' in l:
+					# Split the command at the / and take the first part.
+					l = l.split('/')[0];
+				# Filter out "empty" lines
+				if (l.strip() != ""):
+					# Add sanitized command to command list.
 					self.coms.append(l.strip());
 
 	# Check if the instruction list still has more left to go
@@ -36,7 +42,6 @@ class Parser:
 	def advance(self):
 		self.comIndex += 1;
 		self.curCom = self.coms[self.comIndex];
-		# print(str(comIndex) + " : " + curCom);
 
 	# Check what kind of instruction the current command is
 	def commandType(self):
@@ -95,4 +100,4 @@ class Parser:
 	# easier to just go through the list again rather than bother with dealing
 	# with the actual input file a second time (as a plus, comments are pre-deleted).
 	def resetParser(self):
-		self.curCom = -1;
+		self.comIndex = -1;

@@ -1,0 +1,33 @@
+#  ReadMe
+	
+# 	Please ensure that version 2.7.12 of Python is installed on the user's PC.
+# 	Please note that while a newer version of the 2.7.X branch should work,
+# 	version of the 3.X.X branch will likely fail to compile.
+
+# 	Additionally, note that this assembler was designed with valid ASM code in
+# 	mind - flawed or invalid ASM code may result in undesirable output.
+
+# 	Basic theory of use:
+
+# 	Enter the "main.py" file and move to the end of the file.
+# 	Where the line:
+
+# 		testFile = "[program].asm";
+
+# 	is present, please enter your desired file for compilation.
+
+# 	Then, open a terminal where Python is available, move to the
+# 	program directory and run the command:
+
+# 		>>> python main.py
+
+# 	This will execute the script, turning a valid .asm file into its
+# 	corresponding .hack binary equivilent.
+
+# 	Note that the filename must include the ".asm" filetype indicator
+# 	for the resulting output to properly show the ".hack" filetype - 
+# 	though the contents of the file will be correct regardless.
+
+# 	Thank you!
+
+# 	End of ReadMe

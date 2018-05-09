@@ -35,7 +35,6 @@ class Assembler:
 
 	def firstPass(self,parser,symtab):
 		programCounter = 0;
-		memoryCounter = 16;
 
 		while(parser.hasMoreCommands()):
 			parser.advance();
@@ -43,18 +42,7 @@ class Assembler:
 			curType = parser.commandType();
 
 			if (curType == "A_COMMAND"):
-				symbol = parser.symbol();
-
-				if self.isConstant(symbol):
-					# Its not a label, so we can ignore it for now.
-					pass;
-				else:
-					# Check if the symbol is in the symbol table yet.
-					if not symtab.contains(symbol):
-						# Add symbol to this table, at the smallest available memory location
-						symtab.addEntry(symbol,memoryCounter);
-						memoryCounter += 1;
-
+				# Its not a label, so we can ignore it for now
 				programCounter += 1;
 
 			elif (curType == "L_COMMAND"):
@@ -62,18 +50,21 @@ class Assembler:
 
 				# Check if the label is currently in the table
 				# Assume a currently present label is ignored.
-				if not symtab.contains(symbol):
+				if not symtab.contains(label):
 					# Add symbol to this table, at the current program address
-					symtab.addEntry(symbol,programCounter);
+					symtab.addEntry(label,programCounter);
 
 					# Don't increment the program counter for labels!
 				
 			else: # C_COMMAND
+				# Not a label, so we can ignore it for now.
 				programCounter += 1;		
 
 
 	def secondPass(self, parser, code, symtab):
-		outputString = []
+		outputString = [];
+		memoryCounter = 16;
+
 		while(parser.hasMoreCommands()):
 			parser.advance();
 			
@@ -85,14 +76,24 @@ class Assembler:
 				if self.isConstant(symbol):
 					# Assemble the binary string for the constant A_COMMAND
 					outputString.append("0"+self.int2Bin(int(symbol)));
+
 				else:
-					# Pull in whatever value this label corresponds to.
-					value = symtab.getAddress(symbol);
+					# Check if the symbol is not in the symbol table yet.
+					if not symtab.contains(symbol):
+						# Add symbol to this table, at the smallest available memory location
+						symtab.addEntry(symbol,memoryCounter);
+						# Assemble the binary string for this variable A_COMMAND
+						outputString.append("0"+self.int2Bin(memoryCounter));
+						memoryCounter += 1;
 
-					# Assemble the binary string for the variable A_COMMAND
-					outputString.append("0"+self.int2Bin(value));
+					# Symbol was found, pull in its value.
+					else:
+						# Pull in whatever value this label corresponds to.
+						value = symtab.getAddress(symbol);
+
+						# Assemble the binary string for this label-ed A_COMMAND
+						outputString.append("0"+self.int2Bin(value));
 		
-
 			elif (curType == "L_COMMAND"):
 				pass; # Ignore labels in the second pass.
 
@@ -126,10 +127,7 @@ class Assembler:
 
 				
 
-testFile = "Max.asm"; # Stick the test file here!
-#testFile = "RectL.asm";
-#testFile = "MaxL.asm";
-#testFile = "PongL.asm";
+testFile = "Pong.asm"; # Stick the test file here!
 
 # Instantiate the driver object.
 asm2hack = Assembler();
